@@ -212,6 +212,9 @@ configuration::configuration()
 		if (auto it = json.find("tcp-only"); it != json.end())
 			tcp_only = *it;
 
+		if (auto it = json.find("freeze-fov"); it != json.end())
+			freeze_fov = *it;
+
 		if (auto it = json.find("port"); it != json.end())
 			port = *it;
 

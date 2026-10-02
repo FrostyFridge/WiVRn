@@ -117,6 +117,7 @@ void Settings::emitAllChanged()
 	codecChanged();
 	tenbitChanged();
 	tcpOnlyChanged();
+	freezeFovChanged();
 	applicationChanged();
 	openvrChanged();
 	debugGuiChanged();
@@ -386,6 +387,22 @@ void Settings::set_hidForwarding(const bool & value)
 		hidForwardingChanged();
 }
 
+bool Settings::freezeFov() const
+{
+	auto it = m_jsonSettings.find("freeze-fov");
+	if (it != m_jsonSettings.end() and it->is_boolean())
+		return *it;
+	return false;
+}
+
+void Settings::set_freezeFov(const bool & value)
+{
+	auto old = freezeFov();
+	m_jsonSettings["freeze-fov"] = value;
+	if (old != value)
+		freezeFovChanged();
+}
+
 bool Settings::debugGui() const
 {
 	// Advanced options (debug window, steamvr_lh)
@@ -593,6 +610,7 @@ void Settings::restore_defaults()
 	m_jsonSettings.erase("use-steamvr-lh");
 	m_jsonSettings.erase("lh-stick-deadzone");
 	m_jsonSettings.erase("tcp-only");
+	m_jsonSettings.erase("freeze-fov");
 	m_jsonSettings.erase("application");
 	m_jsonSettings.erase("port");
 	m_jsonSettings.erase("hostname");

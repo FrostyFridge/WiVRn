@@ -115,6 +115,19 @@ If `false` or unset, WiVRn will use both TCP and UDP.
 }
 ```
 
+## `freeze-fov`
+Default value: `false`
+
+Keep the first usable, fully tracked field of view for each eye until the server
+restarts. This can prevent image shake on headsets whose OpenXR runtime alternates
+the field of view every frame, such as the Steam Frame. Head poses and eye offsets
+continue updating normally.
+
+Enable **Lock field of view** in the dashboard's advanced settings, or set
+`"freeze-fov": true` in the configuration file. Restart the server after changing
+this setting. Disable it if an application needs field-of-view changes during a
+session.
+
 ## `publish-service`
 Default value: `avahi`
 

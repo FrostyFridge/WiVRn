@@ -41,10 +41,14 @@ class view_list
 	pose_list head_poses{device_id::HEAD};
 	std::mutex mutex;
 	XrViewStateFlags flags{};
-	std::array<xrt_pose, 2> poses;
-	std::array<xrt_fov, 2> fovs;
+	std::array<xrt_pose, 2> poses{};
+	std::array<xrt_fov, 2> fovs{};
+	const bool freeze_fov;
+	bool fov_frozen = false;
 
 public:
+	explicit view_list(bool freeze_fov = false) : freeze_fov(freeze_fov) {}
+
 	void update_tracking(const from_headset::tracking & tracking, const clock_offset & offset);
 	std::pair<XrTime, tracked_views> get_at(XrTime at_timestamp_ns);
 };

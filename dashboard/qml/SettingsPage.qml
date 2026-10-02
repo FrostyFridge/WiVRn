@@ -108,6 +108,15 @@ Kirigami.ScrollablePage {
                 text: i18n("Check system configuration on start")
             }
             RowLayout {
+                Controls.CheckBox {
+                    id: freeze_fov
+                    text: i18n("Lock field of view")
+                }
+                Kirigami.ContextualHelpButton {
+                    toolTipText: i18n("Keep the field of view constant to prevent image shake on headsets that change it every frame. Head tracking remains active. Restart the server after changing this setting.")
+                }
+            }
+            RowLayout {
                 visible: Settings.hid_forwarding_supported
                 Controls.CheckBox {
                     id: hid_forwarding
@@ -333,6 +342,7 @@ Kirigami.ScrollablePage {
         DashboardSettings.show_system_checks = show_system_checks.checked;
 
         Settings.debugGui = debug_gui.checked;
+        Settings.freezeFov = freeze_fov.checked;
         Settings.steamVrLh = steamvr_lh.checked;
         if (lh_max_extrapolation_enabled.checked) {
             Settings.lhMaxExtrapolation = lh_max_extrapolation.value;
@@ -348,6 +358,7 @@ Kirigami.ScrollablePage {
     function load() {
         select_game.load();
         debug_gui.checked = Settings.debugGui;
+        freeze_fov.checked = Settings.freezeFov;
         steamvr_lh.checked = Settings.steamVrLh;
         lh_max_extrapolation_enabled.checked = Settings.lhMaxExtrapolationEnabled;
         lh_max_extrapolation.value = Settings.lhMaxExtrapolation;

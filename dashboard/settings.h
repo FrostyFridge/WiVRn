@@ -68,6 +68,7 @@ public:
 	Q_PROPERTY(bool tenbit READ tenbit WRITE set_tenbit NOTIFY tenbitChanged)
 
 	Q_PROPERTY(bool tcpOnly READ tcpOnly WRITE set_tcpOnly NOTIFY tcpOnlyChanged)
+	Q_PROPERTY(bool freezeFov READ freezeFov WRITE set_freezeFov NOTIFY freezeFovChanged)
 	Q_PROPERTY(int port READ port WRITE set_port NOTIFY portChanged)
 	Q_PROPERTY(QString hostname READ hostname WRITE set_hostname NOTIFY hostnameChanged)
 	Q_PROPERTY(QString application READ application WRITE set_application NOTIFY applicationChanged)
@@ -98,6 +99,7 @@ public:
 	SETTER_GETTER_NOTIFY(int64_t, lhMaxExtrapolation)
 	SETTER_GETTER_NOTIFY(float, lhStickDeadzone)
 	SETTER_GETTER_NOTIFY(bool, tcpOnly)
+	SETTER_GETTER_NOTIFY(bool, freezeFov)
 	SETTER_GETTER_NOTIFY(int, port)
 	SETTER_GETTER_NOTIFY(QString, hostname)
 	SETTER_GETTER_NOTIFY(QString, openvr)

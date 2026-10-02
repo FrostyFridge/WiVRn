@@ -90,11 +90,10 @@ wivrn_hmd::wivrn_hmd(wivrn::wivrn_session * cnx,
                 .get_battery_status = method_pointer<&wivrn_hmd::get_battery_status>,
                 .destroy = [](xrt_device *) {},
         },
+        views(configuration().freeze_fov),
         presence(true, os_monotonic_get_ns()),
         cnx(cnx)
 {
-	const auto config = configuration();
-
 	auto eye_width = info.render_eye_width;
 	eye_width = ((eye_width + 3) / 4) * 4;
 	auto eye_height = info.render_eye_height;
