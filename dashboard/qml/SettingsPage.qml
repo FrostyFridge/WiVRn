@@ -117,6 +117,24 @@ Kirigami.ScrollablePage {
                 }
             }
             RowLayout {
+                Controls.CheckBox {
+                    id: disable_head_prediction
+                    text: i18n("Disable headset head prediction")
+                }
+                Kirigami.ContextualHelpButton {
+                    toolTipText: i18n("Request current head poses from the headset instead of predicted poses. This can reduce shake but may increase visible delay during head movement. Controller prediction remains active. Restart the server after changing this setting.")
+                }
+            }
+            RowLayout {
+                Controls.CheckBox {
+                    id: disable_head_extrapolation
+                    text: i18n("Disable server head extrapolation")
+                }
+                Kirigami.ContextualHelpButton {
+                    toolTipText: i18n("Stop the server predicting head movement beyond the received poses. Combine with disabling headset head prediction to turn off both prediction stages. This may increase visible delay during head movement. Controller prediction remains active. Restart the server after changing this setting.")
+                }
+            }
+            RowLayout {
                 visible: Settings.hid_forwarding_supported
                 Controls.CheckBox {
                     id: hid_forwarding
@@ -343,6 +361,8 @@ Kirigami.ScrollablePage {
 
         Settings.debugGui = debug_gui.checked;
         Settings.freezeFov = freeze_fov.checked;
+        Settings.disableHeadPrediction = disable_head_prediction.checked;
+        Settings.disableHeadExtrapolation = disable_head_extrapolation.checked;
         Settings.steamVrLh = steamvr_lh.checked;
         if (lh_max_extrapolation_enabled.checked) {
             Settings.lhMaxExtrapolation = lh_max_extrapolation.value;
@@ -359,6 +379,8 @@ Kirigami.ScrollablePage {
         select_game.load();
         debug_gui.checked = Settings.debugGui;
         freeze_fov.checked = Settings.freezeFov;
+        disable_head_prediction.checked = Settings.disableHeadPrediction;
+        disable_head_extrapolation.checked = Settings.disableHeadExtrapolation;
         steamvr_lh.checked = Settings.steamVrLh;
         lh_max_extrapolation_enabled.checked = Settings.lhMaxExtrapolationEnabled;
         lh_max_extrapolation.value = Settings.lhMaxExtrapolation;

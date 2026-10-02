@@ -128,6 +128,42 @@ Enable **Lock field of view** in the dashboard's advanced settings, or set
 this setting. Disable it if an application needs field-of-view changes during a
 session.
 
+## `disable-head-prediction`
+Default value: `false`
+
+Request head poses at the headset's current tracking time instead of future
+predicted times. Controller and other device prediction is unchanged.
+
+Enable **Disable headset head prediction** in the dashboard's advanced settings,
+or set `"disable-head-prediction": true`. Restart the server after changing this
+setting. This can reduce prediction noise, but may increase visible delay during
+head movement. The server can still extrapolate the received poses unless
+`disable-head-extrapolation` is also enabled.
+
+## `disable-head-extrapolation`
+Default value: `false`
+
+Limit server head pose evaluation to the latest timestamp available in both the
+position and orientation histories. Interpolation remains active; controller
+and other device extrapolation is unchanged. The headset can still supply
+predicted head poses unless `disable-head-prediction` is also enabled.
+
+Enable **Disable server head extrapolation** in the dashboard's advanced settings,
+or set `"disable-head-extrapolation": true`. Restart the server after changing
+this setting. This can reduce prediction noise, but may increase visible delay
+during head movement.
+
+For headsets that need a fixed FOV and unpredicted head poses, enable all three
+settings:
+
+```json
+{
+	"freeze-fov": true,
+	"disable-head-prediction": true,
+	"disable-head-extrapolation": true
+}
+```
+
 ## `publish-service`
 Default value: `avahi`
 

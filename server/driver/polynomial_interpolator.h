@@ -120,6 +120,11 @@ public:
 		return result;
 	}
 
+	XrTime latest_timestamp() const
+	{
+		return std::ranges::max(data | std::ranges::views::transform(&sample::timestamp));
+	}
+
 	sample get_at(XrTime timestamp) const
 	{
 		Eigen::Matrix<float, 2 * stored_samples, polynomial_order + 1> A;

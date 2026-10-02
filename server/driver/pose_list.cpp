@@ -92,7 +92,9 @@ xrt_space_relation pose_list::extrapolate(const xrt_space_relation & a, const xr
 	return res;
 }
 
-pose_list::pose_list(wivrn::device_id id) : device(id)
+pose_list::pose_list(wivrn::device_id id, bool disable_head_extrapolation) :
+        disable_extrapolation(id == device_id::HEAD and disable_head_extrapolation),
+        device(id)
 {
 	if (auto dump = std::getenv("WIVRN_DUMP"); dump and dump == std::string_view("list"))
 		std::cerr << "WIVRN_DUMP_" << magic_enum::enum_name(id) << std::endl;
@@ -237,8 +239,16 @@ std::pair<XrTime, xrt_space_relation> pose_list::get_at(XrTime at_timestamp_ns)
 		ret.relation_flags = xrt_space_relation_flags(int(ret.relation_flags) | f);
 	};
 
-	auto position = positions.get_at(at_timestamp_ns);
-	auto orientation = orientations.get_at(at_timestamp_ns);
+	XrTime evaluation_timestamp = at_timestamp_ns;
+	if (disable_extrapolation)
+	{
+		// Keep interpolation, but do not predict beyond either head pose history.
+		const auto newest = std::min(positions.latest_timestamp(), orientations.latest_timestamp());
+		if (newest != std::numeric_limits<XrTime>::lowest())
+			evaluation_timestamp = std::min(evaluation_timestamp, newest);
+	}
+	auto position = positions.get_at(evaluation_timestamp);
+	auto orientation = orientations.get_at(evaluation_timestamp);
 
 	if (position.y)
 	{
@@ -301,7 +311,7 @@ std::pair<XrTime, xrt_space_relation> pose_list::get_at(XrTime at_timestamp_ns)
 		debug_data item{
 		        .in = false,
 		        .production_timestamp = position.production_timestamp,
-		        .timestamp = at_timestamp_ns,
+		        .timestamp = evaluation_timestamp,
 		        .now = os_monotonic_get_ns(),
 		};
 		if (position.y)

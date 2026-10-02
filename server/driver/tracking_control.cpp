@@ -35,6 +35,8 @@ void wivrn::tracking_control::add_request(device_id device, XrTime now, XrTime a
 {
 	std::lock_guard lock(mutex);
 	XrDuration prediction = at_ns - now;
+	if (disable_head_prediction and device == device_id::HEAD)
+		prediction = 0;
 	reqs[device].min_prediction = std::min(reqs[device].min_prediction, prediction);
 	reqs[device].max_prediction = std::max(reqs[device].max_prediction, prediction);
 
@@ -70,6 +72,13 @@ void wivrn::tracking_control::resolve(XrDuration frame_time, XrDuration latency)
 		// Skip unset data
 		if (req.min_prediction > req.max_prediction)
 			continue;
+
+		if (disable_head_prediction and device_id(device) == device_id::HEAD)
+		{
+			// Request an unpredicted head pose, without adding network latency.
+			res.pattern.push_back({.device = device_id::HEAD, .prediction_ns = 0});
+			continue;
+		}
 
 		XrDuration step = frame_time;
 		switch (device_id(device))

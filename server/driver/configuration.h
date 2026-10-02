@@ -62,6 +62,8 @@ struct configuration
 	bool hid_forwarding = false;
 	bool tcp_only = false;
 	bool freeze_fov = false;
+	bool disable_head_prediction = false;
+	bool disable_head_extrapolation = false;
 	int port = wivrn::default_port;
 	std::string hostname = wivrn::hostname();
 	service_publication publication = service_publication::avahi;

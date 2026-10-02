@@ -38,6 +38,7 @@ class pose_list
 	xrt_pose offset;
 	std::atomic_bool derive_forced = false;
 	std::mutex mutex;
+	const bool disable_extrapolation;
 
 	polynomial_interpolator<3> positions;
 	polynomial_interpolator<4, true> orientations;
@@ -62,7 +63,7 @@ public:
 	static xrt_space_relation interpolate(const xrt_space_relation & a, const xrt_space_relation & b, float t);
 	static xrt_space_relation extrapolate(const xrt_space_relation & a, const xrt_space_relation & b, int64_t ta, int64_t tb, int64_t t);
 
-	pose_list(wivrn::device_id id);
+	pose_list(wivrn::device_id id, bool disable_head_extrapolation = false);
 
 	std::pair<XrTime, XrTime> get_bounds() const;
 

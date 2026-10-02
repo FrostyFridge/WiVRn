@@ -118,6 +118,8 @@ void Settings::emitAllChanged()
 	tenbitChanged();
 	tcpOnlyChanged();
 	freezeFovChanged();
+	disableHeadPredictionChanged();
+	disableHeadExtrapolationChanged();
 	applicationChanged();
 	openvrChanged();
 	debugGuiChanged();
@@ -403,6 +405,38 @@ void Settings::set_freezeFov(const bool & value)
 		freezeFovChanged();
 }
 
+bool Settings::disableHeadPrediction() const
+{
+	auto it = m_jsonSettings.find("disable-head-prediction");
+	if (it != m_jsonSettings.end() and it->is_boolean())
+		return *it;
+	return false;
+}
+
+void Settings::set_disableHeadPrediction(const bool & value)
+{
+	auto old = disableHeadPrediction();
+	m_jsonSettings["disable-head-prediction"] = value;
+	if (old != value)
+		disableHeadPredictionChanged();
+}
+
+bool Settings::disableHeadExtrapolation() const
+{
+	auto it = m_jsonSettings.find("disable-head-extrapolation");
+	if (it != m_jsonSettings.end() and it->is_boolean())
+		return *it;
+	return false;
+}
+
+void Settings::set_disableHeadExtrapolation(const bool & value)
+{
+	auto old = disableHeadExtrapolation();
+	m_jsonSettings["disable-head-extrapolation"] = value;
+	if (old != value)
+		disableHeadExtrapolationChanged();
+}
+
 bool Settings::debugGui() const
 {
 	// Advanced options (debug window, steamvr_lh)
@@ -611,6 +645,8 @@ void Settings::restore_defaults()
 	m_jsonSettings.erase("lh-stick-deadzone");
 	m_jsonSettings.erase("tcp-only");
 	m_jsonSettings.erase("freeze-fov");
+	m_jsonSettings.erase("disable-head-prediction");
+	m_jsonSettings.erase("disable-head-extrapolation");
 	m_jsonSettings.erase("application");
 	m_jsonSettings.erase("port");
 	m_jsonSettings.erase("hostname");

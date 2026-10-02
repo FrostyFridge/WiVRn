@@ -90,7 +90,7 @@ wivrn_hmd::wivrn_hmd(wivrn::wivrn_session * cnx,
                 .get_battery_status = method_pointer<&wivrn_hmd::get_battery_status>,
                 .destroy = [](xrt_device *) {},
         },
-        views(configuration().freeze_fov),
+        views(configuration().freeze_fov, configuration().disable_head_extrapolation),
         presence(true, os_monotonic_get_ns()),
         cnx(cnx)
 {

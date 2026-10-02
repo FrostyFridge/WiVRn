@@ -94,7 +94,7 @@ wivrn::wivrn_session::wivrn_session(std::unique_ptr<wivrn_connection> connection
         settings(get_info().settings),
         compositor(*this),
         xrt_system(system),
-        control(*this->connection),
+        control(*this->connection, configuration().disable_head_prediction),
         hmd(this, get_info()),
         left_controller(XRT_DEVICE_TOUCH_CONTROLLER, 0, &hmd, this),
         right_controller(XRT_DEVICE_TOUCH_CONTROLLER, 1, &hmd, this),

@@ -215,6 +215,12 @@ configuration::configuration()
 		if (auto it = json.find("freeze-fov"); it != json.end())
 			freeze_fov = *it;
 
+		if (auto it = json.find("disable-head-prediction"); it != json.end())
+			disable_head_prediction = *it;
+
+		if (auto it = json.find("disable-head-extrapolation"); it != json.end())
+			disable_head_extrapolation = *it;
+
 		if (auto it = json.find("port"); it != json.end())
 			port = *it;
 

@@ -38,7 +38,7 @@ struct tracked_views
 
 class view_list
 {
-	pose_list head_poses{device_id::HEAD};
+	pose_list head_poses;
 	std::mutex mutex;
 	XrViewStateFlags flags{};
 	std::array<xrt_pose, 2> poses{};
@@ -47,7 +47,9 @@ class view_list
 	bool fov_frozen = false;
 
 public:
-	explicit view_list(bool freeze_fov = false) : freeze_fov(freeze_fov) {}
+	explicit view_list(bool freeze_fov = false, bool disable_head_extrapolation = false) :
+	        head_poses(device_id::HEAD, disable_head_extrapolation),
+	        freeze_fov(freeze_fov) {}
 
 	void update_tracking(const from_headset::tracking & tracking, const clock_offset & offset);
 	std::pair<XrTime, tracked_views> get_at(XrTime at_timestamp_ns);
